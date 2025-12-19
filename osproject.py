@@ -1,3 +1,6 @@
+# Dynamic Memory Management Visualizer
+# Page Replacement Algorithms: FIFO and LRU
+
 import tkinter as tk
 from tkinter import messagebox
 
