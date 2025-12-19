@@ -1,32 +1,32 @@
+from flask import Flask, render_template, request
+
+app = Flask(__name__)
+
 def fifo(pages, frames):
     memory = []
-    page_faults = 0
-
-    print("\nFIFO Page Replacement\n")
+    result = []
+    faults = 0
 
     for page in pages:
         if page not in memory:
-            page_faults += 1
+            faults += 1
             if len(memory) < frames:
                 memory.append(page)
             else:
                 memory.pop(0)
                 memory.append(page)
-
-        print("Page:", page, "Frames:", memory)
-
-    print("\nTotal Page Faults:", page_faults)
+        result.append((page, memory.copy()))
+    return result, faults
 
 
 def lru(pages, frames):
     memory = []
-    page_faults = 0
-
-    print("\nLRU Page Replacement\n")
+    result = []
+    faults = 0
 
     for page in pages:
         if page not in memory:
-            page_faults += 1
+            faults += 1
             if len(memory) < frames:
                 memory.append(page)
             else:
@@ -35,27 +35,26 @@ def lru(pages, frames):
         else:
             memory.remove(page)
             memory.append(page)
-
-        print("Page:", page, "Frames:", memory)
-
-    print("\nTotal Page Faults:", page_faults)
+        result.append((page, memory.copy()))
+    return result, faults
 
 
+@app.route("/", methods=["GET", "POST"])
+def index():
+    output = []
+    faults = 0
 
-print("Dynamic Memory Management Visualizer")
+    if request.method == "POST":
+        frames = int(request.form["frames"])
+        pages = list(map(int, request.form["pages"].split()))
+        algo = request.form["algo"]
 
-frames = int(input("Enter number of frames: "))
-pages = list(map(int, input("Enter page reference string: ").split()))
+        if algo == "FIFO":
+            output, faults = fifo(pages, frames)
+        else:
+            output, faults = lru(pages, frames)
 
-print("\nChoose Page Replacement Algorithm")
-print("1. FIFO")
-print("2. LRU")
+    return render_template("index.html", output=output, faults=faults)
 
-choice = int(input("Enter choice: "))
-
-if choice == 1:
-    fifo(pages, frames)
-elif choice == 2:
-    lru(pages, frames)
-else:
-    print("Invalid choice")
+if __name__ == "__main__":
+    app.run(debug=True)
