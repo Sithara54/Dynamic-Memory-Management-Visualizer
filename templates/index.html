@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Memory Visualizer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar">
+    <div class="logo">Memory Visualizer</div>
+    <div class="nav-links">
+        <a href="#">Home</a>
+        <a href="#">Algorithms</a>
+        <a href="#">Visualizer</a>
+        <a href="#">About</a>
+    </div>
+</nav>
+
+<!-- SEARCH BAR STYLE -->
+<section class="search-section">
+    <input type="text" placeholder="Search memory concepts or algorithms">
+    <button>Search</button>
+</section>
+
+<!-- MAIN CONTENT -->
+<section class="content">
+
+    <div class="definition-card">
+        <h1>Dynamic Memory Management Visualizer</h1>
+        <p class="subtitle">
+            A web-based tool to visually understand page replacement algorithms
+            used in Operating Systems.
+        </p>
+    </div>
+
+    <div class="simulator-card">
+        <h2>Memory Simulation</h2>
+
+        <label>Number of Frames</label>
+        <input type="number" id="frames" placeholder="e.g. 3">
+
+        <label>Page Reference String</label>
+        <input type="text" id="pages" placeholder="7 0 1 2 0 3">
+
+        <label>Algorithm</label>
+        <select id="algorithm">
+            <option value="FIFO">FIFO</option>
+            <option value="LRU">LRU</option>
+        </select>
+
+        <button onclick="simulate()">Visualise</button>
+    </div>
+
+    <div class="result-card">
+        <h2>Visualization Output</h2>
+        <div id="result">Run the simulation to view memory allocation</div>
+    </div>
+
+</section>
+
+
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
